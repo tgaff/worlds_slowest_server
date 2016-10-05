@@ -94,7 +94,9 @@ app.get('/api', function api_index (req, res){
  * SERVER *
  **********/
 
-// listen on port 3000
-app.listen(process.env.PORT || 3000, function () {
-  console.log('Express server is running on http://localhost:3000/');
+// listen
+
+listenPort = process.env.port || 5000;
+app.listen(listenPort, function () {
+  console.log('Express server is running on http://localhost:' + listenPort + '/');
 });
