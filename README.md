@@ -7,7 +7,7 @@ npm install
 node server.js 
 ```
 
-Then visit localhost:3000.
+Then visit [http://localhost:5000](http://localhost:5000).
 
 Open the developer tools network tab to observe the loading process.
 
