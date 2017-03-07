@@ -4,12 +4,17 @@ var express = require('express'),
 var Throttle = require('throttle')
 var fs = require("fs");
 var mime = require('mime');
+var path = require('path');
+var bodyParser = require("body-parser"),
+
 THROTTLE_SPEED = 20000; // bps
 RESPONSE_DELAY = 3000; // ms
 
+// decode req body
+app.use(bodyParser.urlencoded({ extended: true }));
 
-// serve static files from public folder
-//app.use(express.static(__dirname + '/public'));
+// serve static files (fast) from public folder
+app.use('/fastpublic', express.static(__dirname + '/public'));
 
 // transfers files slowly based on THROTTLE_SPEED with delay RESPONSE_DELAY
 function transferFileSlowly(assetPath, req, res, next) {
@@ -64,6 +69,10 @@ app.get('/', function homepage (req, res) {
 //  res.sendFile(__dirname + '/views/index.html');
 });
 
+app.get('/config*', function(req, res, next) {
+  res.sendFile(path.join(__dirname + '/views/config.html'));
+})
+
 app.get('/css/:fileName', function(req,res,next) {
   var file = __dirname + '/public/css/' + req.params.fileName
   transferFileSlowly(file, req,res,next);
@@ -81,14 +90,33 @@ app.get('/js/:fileName', function(req,res,next) {
 
 app.get('/api', function api_index (req, res){
   res.json({
-    message: "Welcome to my personal api!",
-    documentation_url: "https://github.com/sf-wdi-25/express_self_api/README.md", // CHANGE THIS TO LINK TO YOUR README.md
-    base_url: "http://YOUR-APP-NAME.herokuapp.com",
+    message: "config api",
     endpoints: [
-      {method: "GET", path: "/api", description: "Describes available endpoints"}
+      {method: "GET", path: "/api/", description: "Describes available endpoints"},
+      {method: "GET", path: "/api/config", description: "Get current server config"},
+      {method: "PUT", path: "/api/config", description: "Set server config"}
     ]
   })
 });
+app.get('/api/config', readServerConfig);
+
+app.post('/api/config', function (req, res){
+  console.log(req.body);
+  if (req.body.responseDelay) {
+    RESPONSE_DELAY = parseInt(req.body.responseDelay);
+  }
+  if (req.body.transmitSpeed) {
+    THROTTLE_SPEED = parseInt(req.body.transmitSpeed);
+  }
+  readServerConfig(req,res);
+});
+
+function readServerConfig(req, res){
+  res.json({
+    transmitSpeed: THROTTLE_SPEED,
+    responseDelay: RESPONSE_DELAY
+  })
+}
 
 /**********
  * SERVER *
