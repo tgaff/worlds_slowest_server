@@ -1,0 +1,18 @@
+body {
+  color: #333;
+  font-family: Helvetica, Arial, sans-serif;
+  background-color: skyblue; /* Sanity Check! */
+}
+
+
+.glyphicon-refresh {
+  font-size: 40px;
+}
+
+.rotating {
+  animation: spin 1s infinite ease-in-out;
+}
+@keyframes spin {
+    0%   {transform: rotate(0deg) }
+    100% {transform: rotate(360deg) }
+}
