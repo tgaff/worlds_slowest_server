@@ -13,6 +13,9 @@ body {
   animation: spin 1s infinite ease-in-out;
 }
 @keyframes spin {
-    0%   {transform: rotate(0deg) }
-    100% {transform: rotate(360deg) }
+    0%   { transform: rotate(0deg) }
+    100% { transform: rotate(360deg) }
+}
+.irs-bar-warning {
+  background: linear-gradient(to top, rgba(235,39,9,1) 0%,rgba(235,156,9,1) 100%); /* W3C */
 }

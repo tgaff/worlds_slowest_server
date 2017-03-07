@@ -3,6 +3,11 @@ responseDelayValues = [0, 200, 500, 750, 1000, 2000, 4000, 6000, 8000, 10000, 15
 var configuredBool = false;
 
 $(document).ready(function(){
+  // hide stuff if this is the pop-up control panel
+  if (window.location.href.match('popup=true')) {
+    $('.hide-if-popup').addClass('hidden');
+  }
+
   fetchServerConfig((config) => {
     console.log('Server returned config:', config);
     sliders = buildSlider('response-delay', "Response Delay");
@@ -15,7 +20,7 @@ $(document).ready(function(){
       step: 250,
       // values: responseDelayValues,
       onFinish: pushConfig,
-      prettify: prettifyResponseDelay
+      prettify: prettifyResponseDelay,
     });
 
     $("#transmit-speed").ionRangeSlider({
@@ -46,7 +51,6 @@ function prettifyResponseDelay(value) {
   }
   return value;
 }
-
 
 fetchServerConfig = (callback) => {
   $.get('/api/config').done(callback);
