@@ -1,5 +1,4 @@
 console.log("Sanity Check: JS is working!");
-responseDelayValues = [0, 200, 500, 750, 1000, 2000, 4000, 6000, 8000, 10000, 15000, 20000]
 var configuredBool = false;
 
 $(document).ready(function(){
